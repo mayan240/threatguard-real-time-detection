@@ -1,0 +1,25 @@
+@relation cyber_traffic
+
+@attribute req_count_60s numeric
+@attribute failed_auth_count numeric
+@attribute error_404_count numeric
+@attribute unique_endpoints numeric
+@attribute error_rate_ratio numeric
+@attribute avg_response_time_ms numeric
+@attribute avg_payload_bytes numeric
+@attribute signature_hit_count numeric
+@attribute threat_class {Normal,BruteForce,EndpointScan,AppDoS,PayloadAttack,BehavioralAnomaly}
+
+@data
+8,0,0,3,0.00,42,512,0,Normal
+14,1,0,5,0.07,55,680,0,Normal
+12,10,0,2,0.83,70,420,0,BruteForce
+31,28,1,4,0.94,65,380,0,BruteForce
+44,0,24,38,0.61,48,300,0,EndpointScan
+70,1,55,62,0.81,52,240,0,EndpointScan
+18,0,0,7,0.05,2400,900,0,AppDoS
+25,0,1,8,0.16,5100,1200,0,AppDoS
+16,0,0,3,0.06,90,250000,0,PayloadAttack
+22,0,0,5,0.05,110,780000,4,PayloadAttack
+95,2,5,18,0.18,180,3400,0,BehavioralAnomaly
+52,3,10,29,0.28,410,1800,0,BehavioralAnomaly
