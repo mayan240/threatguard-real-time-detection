@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ThreatGuard Training Data</title>
+    <style>
+      :root {
+        color: #173b5c;
+        background: #eef6ff;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 32px;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: auto;
+        padding: 24px;
+        background: #fff;
+        border: 1px solid #dbe9f7;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(38, 86, 135, 0.08);
+      }
+
+      h1 {
+        margin: 0 0 8px;
+      }
+
+      p {
+        color: #5c7791;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        margin-top: 24px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        padding: 10px 12px;
+        border: 1px solid #dbe9f7;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      th {
+        background: #eaf4ff;
+        color: #245786;
+      }
+
+      tr:nth-child(even) {
+        background: #f8fbff;
+      }
+
+      .error {
+        color: #b34c4c;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>ThreatGuard Training Dataset</h1>
+      <p>10,000 synthetic security events used by the anomaly detection model: 7,000 normal and 3,000 anomaly records.</p>
+      <div id="output">Loading training data...</div>
+    </main>
+
+    <script>
+      function parseCsv(text) {
+        return text.trim().split(/\r?\n/).map((line) => line.split(','));
+      }
+
+      fetch('./training-security-events.csv')
+        .then((response) => {
+          if (!response.ok) throw new Error('Training CSV could not be loaded.');
+          return response.text();
+        })
+        .then((text) => {
+          const rows = parseCsv(text);
+          const table = document.createElement('table');
+          const header = document.createElement('thead');
+          const body = document.createElement('tbody');
+
+          header.innerHTML = `<tr>${rows[0].map((cell) => `<th>${cell}</th>`).join('')}</tr>`;
+          rows.slice(1).forEach((row) => {
+            const tableRow = document.createElement('tr');
+            tableRow.innerHTML = row.map((cell) => `<td>${cell}</td>`).join('');
+            body.appendChild(tableRow);
+          });
+
+          table.append(header, body);
+          const wrapper = document.createElement('div');
+          wrapper.className = 'table-wrap';
+          wrapper.appendChild(table);
+          document.getElementById('output').replaceWith(wrapper);
+        })
+        .catch((error) => {
+          document.getElementById('output').innerHTML = `<p class="error">${error.message}</p>`;
+        });
+    </script>
+  </body>
+</html>
